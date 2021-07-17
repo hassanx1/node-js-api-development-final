@@ -1,0 +1,33 @@
+{
+  "name": "bootcamp-api",
+  "version": "1.0.0",
+  "description": "Node js backend api development",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassanx1/node-js-api-development-final.git"
+  },
+  "keywords": [
+    "Node",
+    "js",
+    "Express",
+    "Mongodb"
+  ],
+  "author": "Muwonge Hassan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hassanx1/node-js-api-development-final/issues"
+  },
+  "homepage": "https://github.com/hassanx1/node-js-api-development-final#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
