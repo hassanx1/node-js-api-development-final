@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 // file upload
-app.use(fileupload);
+app.use(fileupload());
 
 // mount routes
 app.use("/api/v1/bootcamps", bootcamps);
@@ -38,7 +38,7 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-  console.log(`App listening in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  console.log(`Server Runing in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
 
 // handle unhandled promise rejection
