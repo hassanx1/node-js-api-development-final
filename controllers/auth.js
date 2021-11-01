@@ -7,5 +7,14 @@ const User = require("../models/User");
 // @method   GET al/api/v1/auth/register
 //@access    Public
 exports.register = asyncHandler(async (req, res, next) => {
-  res.status(200).json({ success: true });
+  const {name, email, password, role} = req.body;
+
+  // create user
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role
+  });
+
 });
