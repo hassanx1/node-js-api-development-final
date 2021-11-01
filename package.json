@@ -25,6 +25,7 @@
   "homepage": "https://github.com/hassanx1/node-js-api-development-final#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
