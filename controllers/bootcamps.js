@@ -121,15 +121,23 @@ exports.createBootcamp = asyncHandler(async (req, res, next) => {
 // @method   PUT al/api/v1/bootcamps/
 //@access    Private
 exports.updateBootcamp = asyncHandler(async (req, res, next) => {
-  const bootcamp = await Bootcamp.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  let bootcamp = await Bootcamp.findById(req.params.id);
   if (!bootcamp) {
-    return res.status(400).json({
-      success: false,
-    });
+    return next(
+        new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`,404));
   }
+  // make sure user is bootcamp owner
+  if (bootcamp.user.toString() != req.user.id && req.user.role !== 'admin'){
+    return next(
+        new ErrorResponse(`User ${req.params.id} is not authoried to update this bootcamp`, 401)
+    );
+  }
+  bootcamp = await Bootcamp.findOneAndUpdate(req.params.id, req.body,{
+    new: true,
+    runValidators: true
+  });
+
+  res.status(200).json({success: true, data:bootcamp});
 });
 
 //@desc      Delete single bootcamps
@@ -147,6 +155,14 @@ exports.deleteBootcamp = asyncHandler(async (req, res, next) => {
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
   }
+
+  // make sure user is bootcamp owner
+  if (bootcamp.user.toString() != req.user.id && req.user.role !== 'admin'){
+    return next(
+        new ErrorResponse(`User ${req.params.id} is not authoried to delete this bootcamp`, 401)
+    );
+  }
+
   bootcamp.remove();
 
   res.status(200).json({
@@ -204,5 +220,22 @@ exports.bootcampPhotoUpload = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404)
     );
+  }
+
+  // make sure user is bootcamp owner
+  if (bootcamp.user.toString() != req.user.id && req.user.role !== 'admin'){
+    return next(
+        new ErrorResponse(`User ${req.params.id} is not authoried to upload a photo`, 404)
+    );
+  }
+  if(!req.files){
+    new ErrorResponse(`User ${req.params.id} is not authoried to upload a file`, 404)
+  }
+
+  const file = req.files.file;
+
+  // make sure the image is a photo
+  if(!file.mimetype.startsWith('image')){
+    return next(new ErrorResponse(`Please upload an image file`, 404));
   }
 });
