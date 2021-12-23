@@ -1,7 +1,21 @@
+// * @Author: Muwonge Hassan Saava
+
+// * @Email: hassansaava@gmail.com
+
+// * @LinkedIn: https://www.linkedin.com/in/hassan-muwonge-4a4592144/
+
+// * @Github: https://github.com/mhassan654
+
+// * @GitLab: https://gitlab.com/hmuwonge
+
+// * @Tel: +256-783-828977 / +256-704-348792
+// * Web: https://muwongehassan.com
+
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const fileupload = require("express-fileupload");
+const cookieParser = require('cookie-parser')
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
@@ -16,11 +30,15 @@ connectDB();
 // Router files
 const bootcamps = require("./routes/bootcamps");
 const courses = require("./routes/courses");
+const auth = require("./routes/auth");
 
 const app = express();
 
 // body parser
 app.use(express.json());
+
+// cookie parser
+app.use(cookieParser());
 
 // dev logging middleware
 if (process.env.NODE_ENV === "development") {
@@ -33,6 +51,7 @@ app.use(fileupload());
 // mount routes
 app.use("/api/v1/bootcamps", bootcamps);
 app.use("/api/v1/courses", courses);
+app.use("/api/v1/auth", auth);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
