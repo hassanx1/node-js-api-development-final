@@ -52,13 +52,85 @@ exports.addReview = asyncHandler(async (req, res, next) => {
    const bootcamp = await Bootcamp.findById(req.params.bootcampId);
 
    if(!bootcamp){
-       return next(new ErrorResponse(`No bootcamp with the id of ${req.params.bootcampId}`, 404));
+       return next(
+           new ErrorResponse(
+               `No bootcamp with the id of ${req.params.bootcampId}`,
+               404
+           )
+       );
    }
 
    const review = await Review.create(req.body);
 
     res.status(201).json({
         success: true,
-        data: bootcamp
+        data: review
+    });
+});
+
+//@desc Update a review
+// @desc PUT /api/v1/bootcamps/:bootcampId/
+// @access  Public
+exports.updateReview = asyncHandler(async (req, res, next) => {
+    let review = await Review.findById(req.params.id);
+
+    if(!review){
+        return next(
+            new ErrorResponse(
+                `No review with the id of ${req.params.id}`,
+                404
+            )
+        );
+    }
+
+    // make sure review belongs to usr or user is admin
+    if(review.user.toString() !== req.user.id && req.user.role !== 'admin'){
+        return next(
+            new ErrorResponse(
+                `Not authorized to update review`, 404
+            )
+        );
+    }
+
+    review = await Review.findByIdAndUpdate(req.params.id, req.body,{
+        new: true,
+        runValidators: true
+    });
+
+    res.status(200).json({
+        success: true,
+        data: review
+    });
+});
+
+//@desc Delete a review
+// @desc DELETE /api/v1/bootcamps/:bootcampId/
+// @access  Public
+exports.deleteReview = asyncHandler(async (req, res, next) => {
+    let review = await Review.findById(req.params.id);
+
+    if(!review){
+        return next(
+            new ErrorResponse(
+                `No review with the id of ${req.params.id}`,
+                404
+            )
+        );
+    }
+
+    // make sure review belongs to usr or user is admin
+    if(review.user.toString() !== req.user.id && req.user.role !== 'admin'){
+        return next(
+            new ErrorResponse(
+                `Not authorized to update review`, 404
+            )
+        );
+    }
+
+    await review.remove();
+
+    res.status(200).json({
+        success: true,
+        data: {}
     });
 });
