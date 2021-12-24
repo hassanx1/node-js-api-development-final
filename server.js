@@ -11,17 +11,19 @@
 // * @Tel: +256-783-828977 / +256-704-348792
 // * Web: https://muwongehassan.com
 
+const path = require('path');
 const express = require("express");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
 const fileupload = require("express-fileupload");
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 
 // load env variabels
 dotenv.config({
-  path: "./config/config.env",
+    path: "./config/config.env",
 });
 
 // connect to db
@@ -44,11 +46,17 @@ app.use(cookieParser());
 
 // dev logging middleware
 if (process.env.NODE_ENV === "development") {
-  app.use(morgan("dev"));
+    app.use(morgan("dev"));
 }
 
 // file upload
 app.use(fileupload());
+
+// sanitize data
+app.use(mongoSanitize());
+
+// set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 // mount routes
 app.use("/api/v1/bootcamps", bootcamps);
@@ -61,13 +69,13 @@ app.use(errorHandler);
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
-  console.log(`Server Running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    console.log(`Server Running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
 
 // handle unhandled promise rejection
 process.on("unhandledRejection", (err, promise) => {
-  console.log(`Error: ${err.message}`);
+    console.log(`Error: ${err.message}`);
 
-  // close server & exit process
-  server.close(() => process.exit(1));
+    // close server & exit process
+    server.close(() => process.exit(1));
 });
