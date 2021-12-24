@@ -1,7 +1,23 @@
-# node-js-api-development-final
-# NODE JS API DEVELOPMENT WITH MONGO DB AND EXPRESS
-# This is a backend api development for a bootcamp project developed using core node js and express with mongodb as the database, 
-# Clone the project from the project repository link
-# Run npm install
-# Configure the Config the conig_env file with your mongodb database details eg. 127.0.0.1:2707
-# Run database seeder using below command
+# DevCamper API
+> Backend API for DevCamper application, which is a bootcamp directory website
+
+## Usage
+Rename "config/config.env.env" to "config/config.env" and update the values/settings to your own
+
+## Install Dependencies
+```
+npm install
+```
+
+## Run application
+```
+# Run in dev mode
+npm run dev
+
+# Run in prod mode
+npm start
+```
+
+- Version: 1.0.0
+- License: MIT
+

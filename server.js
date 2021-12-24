@@ -69,7 +69,7 @@ app.use(xss());
 // rate limiting
 const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 1 // limit each IP to 100 requests per windowMs
+    max: 10 // limit each IP to 100 requests per windowMs
 });
 
 app.use(limiter);
