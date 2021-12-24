@@ -14,11 +14,11 @@ const router = express.Router({
 });
 
 const advancedResults = require("../middleware/advancedResults");
-const {protect, authorize} = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 router.route('/')
     .get(advancedResults(Review, {
-            path: 'bootcamp',
+            path: 'bootcamps',
             select: 'name description'
         }),
         getReviews
@@ -26,8 +26,7 @@ router.route('/')
 
 router.route('/:id')
     .get(getReview)
-    .put(protect, authorize('user', 'admin'),updateReview)
-    .delete(protect, authorize('user', 'admin'),deleteReview)
-;
+    .put(protect, authorize('user', 'admin'), updateReview)
+    .delete(protect, authorize('user', 'admin'), deleteReview);
 
 module.exports = router;

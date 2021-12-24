@@ -69,7 +69,7 @@ app.use(xss());
 // rate limiting
 const limiter = rateLimit({
     windowMs: 10 * 60 * 1000, // 10 minutes
-    max: 10 // limit each IP to 100 requests per windowMs
+    max: 100 // limit each IP to 100 requests per windowMs
 });
 
 app.use(limiter);
@@ -102,5 +102,5 @@ process.on("unhandledRejection", (err, promise) => {
     console.log(`Error: ${err.message}`);
 
     // close server & exit process
-    server.close(() => process.exit(1));
+    // server.close(() => process.exit(1));
 });
