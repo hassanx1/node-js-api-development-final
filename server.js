@@ -20,6 +20,7 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require("helmet");
 const xss = require('xss-clean');
+const cors = require('cors');
 const rateLimit = require("express-rate-limit");
 const hpp = require("hpp");
 const errorHandler = require("./middleware/error");
@@ -75,6 +76,9 @@ app.use(limiter);
 
 // Prevent http param pollution
 app.use(hpp());
+
+// Prevent cors
+app.use(cors());
 
 // set static folder
 app.use(express.static(path.join(__dirname, 'public')));
